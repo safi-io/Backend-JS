@@ -1,0 +1,1 @@
+I am from text file which is located in Public Folder
