@@ -15,7 +15,7 @@
         // let data = db.courses.find({"name" : "CS-55"}) // Find One will give first result that will be matched
         // console.log(data)
 
-    // Updating in Data
+    // Updating in Database
 
         // db.courses.updateOne({country : "London West"},
         //   {
@@ -25,6 +25,6 @@
         //   }
         // )
 
-    // Deleting in Data
+    // Deleting in Database
 
         // db.courses.deleteOne({country : "London East"})
