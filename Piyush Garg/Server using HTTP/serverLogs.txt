@@ -1,0 +1,10 @@
+Request Type is GET at 8/1/2024, 8:55:54 PM to /
+Request Type is GET at 8/1/2024, 8:56:00 PM to /safi
+Request Type is GET at 8/1/2024, 8:56:09 PM to /safikhan
+Request Type is GET at 8/1/2024, 9:00:00 PM to /safikhan?age=18&city=%22Faisalabad%22
+Request Type is GET at 8/1/2024, 9:00:21 PM to /safikhan?age=18&city=Faisalabad
+Request Type is GET at 8/1/2024, 9:09:59 PM to /safikhan?age=18&city=Faisalabad
+Request Type is GET at 8/1/2024, 9:10:11 PM to /safikhan?age=18&city=Faisalabad
+Request Type is GET at 8/1/2024, 9:10:48 PM to /
+Request Type is GET at 8/1/2024, 9:10:56 PM to /?name=Safi
+Request Type is GET at 8/1/2024, 9:10:59 PM to /?name=Emaan
