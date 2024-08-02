@@ -1,7 +1,10 @@
 const express = require("express");
+const fs = require("fs");
 const app = express();
 const port = 4000;
 const users = require("./MOCK_DATA.json");
+
+app.use(express.urlencoded({ extended: false }));
 
 // Sending Users Data as a HTML
 app.get("/users", (req, res) => {
@@ -29,23 +32,36 @@ app
       res.send("User not available for this id.");
     }
   })
-  .put((req, res) => {
-    // Todo
-    res.json({ status: "put pending" });
-  })
   .patch((req, res) => {
-    // Todo
-    res.json({ status: "patch pending" });
+    const id = Number(req.params.id);
+    const updateData = req.body;
+    const userIndex = users.findIndex((user) => user.id === id);
+
+    if (userIndex !== -1) {
+      users[userIndex] = { ...users[userIndex], ...updateData };
+
+      console.log(users[userIndex])
+
+      fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err) => {
+        res.send("Data editied")
+      });
+    }
   })
   .delete((req, res) => {
-    // Todo
-    res.json({ status: "delete pending" });
+    const id = Number(req.params.id);
+    const newData = users.filter((user) => user.id !== id);
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(newData), (err, data) => {
+      res.send(`Data Deleted for id ${id}`);
+    });
   });
 
 // Post Request
 app.post("/api/users", (req, res) => {
-  // Todo
-  res.json({ status: "post pending" });
+  const data = req.body;
+  users.push({ ...data, id: users.length + 1 });
+  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
+    res.send(`Data added at id:- ${users.length}`);
+  });
 });
 
 // Server Listening
