@@ -21,6 +21,7 @@ app.get("/api/users", (req, res) => {
   return res.json(users);
 });
 
+// Manipulating Specific user data
 app
   .route("/api/users/:id")
   .get((req, res) => {
@@ -29,7 +30,7 @@ app
     if (info.length > 0) {
       res.send(info);
     } else {
-      res.send("User not available for this id.");
+      res.status(404).send("User not available for this id.");
     }
   })
   .patch((req, res) => {
@@ -40,10 +41,10 @@ app
     if (userIndex !== -1) {
       users[userIndex] = { ...users[userIndex], ...updateData };
 
-      console.log(users[userIndex])
+      console.log(users[userIndex]);
 
       fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err) => {
-        res.send("Data editied")
+        res.send("Data editied");
       });
     }
   })
@@ -58,9 +59,14 @@ app
 // Post Request
 app.post("/api/users", (req, res) => {
   const data = req.body;
+  if (!data || !data.first_name || !data.last_name) {
+    return res
+      .status(400)
+      .json({ error: "First name and Last name are compulsory." });
+  }
   users.push({ ...data, id: users.length + 1 });
   fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-    res.send(`Data added at id:- ${users.length}`);
+    res.status(201).send(`Data added at id:- ${users.length}`);
   });
 });
 
