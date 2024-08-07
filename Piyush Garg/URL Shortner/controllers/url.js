@@ -14,7 +14,13 @@ async function handleGenerateNewShortURL(req, res) {
     visitHistory: [],
   });
 
-  return res.json({ id: shortID });
+  const allData = await url.find({});
+
+  return res.render("submitRedirect", {
+    redirectUrl: body.url,
+    shortID: shortID,
+    urls: allData,
+  });
 }
 
 async function handleAnalytics(req, res) {
@@ -26,7 +32,6 @@ async function handleAnalytics(req, res) {
   if (entry) {
     res.json({ VistiorCount: entry.visitHistory.length });
   }
-
 }
 
 module.exports = {
