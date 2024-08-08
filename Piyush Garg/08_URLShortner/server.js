@@ -1,9 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const path = require("path");
+
+const userRoute = require("./routes/user");
 const staticRoute = require("./routes/staticRouter");
 const urlRoute = require("./routes/url");
+
 const url = require("./models/url");
+const { restrictToLogIn, checkAuth } = require("./middlewares/auth");
 
 const app = express();
 const port = 4500;
@@ -14,6 +19,7 @@ app.set("views", path.resolve("./views"));
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // Connection to Database
 mongoose
@@ -22,8 +28,9 @@ mongoose
   .catch(() => console.log("Database not Connected..."));
 
 // Routes
-app.use("/", staticRoute);
-app.use("/url", urlRoute);
+app.use("/", checkAuth, staticRoute);
+app.use("/user", userRoute);
+app.use("/url", restrictToLogIn, urlRoute);
 
 // Redirection Get Request
 app.get("/:slug", async (req, res) => {
@@ -38,7 +45,7 @@ app.get("/:slug", async (req, res) => {
       },
     }
   );
-  res.redirect(entry?.redirectUrl);
+  return res.redirect(entry?.redirectUrl);
 });
 
 app.listen(port, () => console.log("Server on Port", port));
