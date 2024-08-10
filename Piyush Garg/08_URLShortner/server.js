@@ -28,9 +28,9 @@ mongoose
   .catch(() => console.log("Database not Connected..."));
 
 // Routes
-app.use("/", checkAuth, staticRoute);
+app.use("/", staticRoute);
 app.use("/user", userRoute);
-app.use("/url", restrictToLogIn, urlRoute);
+app.use("/url", checkAuth, urlRoute);
 
 // Redirection Get Request
 app.get("/:slug", async (req, res) => {

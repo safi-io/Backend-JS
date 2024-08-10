@@ -13,7 +13,7 @@ async function handleGenerateNewUrl(req, res) {
     shortId: shortID,
     redirectUrl: body.url,
     visitHistory: [],
-    createdBy: req.user._id,
+    createdBy: req.user?._id,
   });
 
   return res.redirect("/");
@@ -25,7 +25,7 @@ async function handleGetAnalytics(req, res) {
   const result = await url.findOne({ shortId });
 
   return res.json({
-    "Total Clicks": result.visitHistory.length,
+    "Total Clicks": result.visitHistory?.length,
   });
 }
 

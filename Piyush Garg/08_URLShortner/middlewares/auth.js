@@ -1,35 +1,32 @@
 const { getUser } = require("../service/auth");
 
-function restrictToLogIn(req, res, next) {
-  try {
-    const userID = req.cookies?.uid; // Accessing cookies is synchronous
-    if (!userID) {
-      return res.redirect("/login");
-    }
-
-    const user = getUser(userID); // Retrieve user synchronously
-    if (!user) {
-      return res.redirect("/login");
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    console.error("Error in restrictToLogIn middleware:", error);
-    return res.status(500).send("Internal Server Error");
-  }
-}
-
 async function checkAuth(req, res, next) {
-  const userID = req.cookies?.uid; // Accessing cookies is synchronous
+  const userID = req.cookies?.uid;
 
-  const user = getUser(userID); // Retrieve user synchronously
+  if (!userID) {
+    return res.redirect("/login");
+  }
 
-  req.user = user;
+  const user = await getUser(userID);
+
+  if (!user) {
+    return res.redirect("/login");
+  }
+
   next();
 }
 
+function restrictTo(roles = []) {
+  return function (req, res, next) {
+    console.log(req.user.role);
+    if (!roles.includes(req.user.role)) {
+      return res.json({ status: "Unauthorized" });
+    }
+    return next();
+  };
+}
+
 module.exports = {
-  restrictToLogIn,
   checkAuth,
+  restrictTo,
 };

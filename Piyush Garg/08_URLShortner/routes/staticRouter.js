@@ -3,10 +3,7 @@ const router = express.Router();
 const url = require("../models/url");
 
 router.get("/", async (req, res) => {
-  if (!req.user) {
-    return res.redirect("/login");
-  }
-  const allData = await url.find({ createdBy: req.user._id });
+  const allData = await url.find({});
   return res.render("homepage", {
     urls: allData,
   });
@@ -19,7 +16,5 @@ router.get("/signup", (req, res) => {
 router.get("/login", (req, res) => {
   return res.render("login");
 });
-
-router;
 
 module.exports = router;
