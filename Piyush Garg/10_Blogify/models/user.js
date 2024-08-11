@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const { createHmac, randomBytes } = require("crypto");
+const { createTokenForUser } = require("../services/auth");
 
-// Schema
+// Schema of User
 const userSchema = new mongoose.Schema(
   {
     fullName: {
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     profileImageUrl: {
       type: String,
-      default: "/images/default.png",
+      default: "/userProfiles/default.png",
     },
     role: {
       type: String,
@@ -33,7 +34,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Hasing Password using Crypto
+// Hasing Password using Crypto Library
 userSchema.pre("save", function (next) {
   const user = this;
   if (!user.isModified("password")) return;
@@ -48,26 +49,30 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-// To Match Password After Sign-in
-userSchema.static("matchPassword", async function (email, password) {
-  const userData = await this.findOne({ email });
-  if (!userData) {
-    throw new Error("User not found in Database");
+// To Match Password After Sign-in and Return Token
+userSchema.static(
+  "matchPasswordAndGenerateToken",
+  async function (email, password) {
+    const userData = await this.findOne({ email });
+    if (!userData) {
+      throw new Error("User not found in Database");
+    }
+
+    const salt = userData.salt;
+    const hashedPass = userData.password;
+
+    const userProvidedHash = createHmac("sha256", salt)
+      .update(password)
+      .digest("hex");
+
+    if (hashedPass !== userProvidedHash) {
+      throw new Error("Incorrect Password");
+    }
+
+    const token = createTokenForUser(userData);
+    return token;
   }
-
-  const salt = userData.salt;
-  const hashedPass = userData.password;
-
-  const userProvidedHash = createHmac("sha256", salt)
-    .update(password)
-    .digest("hex");
-
-  if (hashedPass !== userProvidedHash) {
-    throw new Error("Incorrect Password");
-  }
-
-  return { ...userData._doc, password: undefined, salt: undefined };
-});
+);
 
 // Model
 const user = mongoose.model("user", userSchema);

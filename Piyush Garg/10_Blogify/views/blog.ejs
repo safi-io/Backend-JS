@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Blogify- Read Blogs</title>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+    
+    
+    <% if (!locals.user) { %>
+    <div class="alert alert-info" role="alert">
+      You must sign-in to add comments on blogs.
+    </div>
+    <% } %>
+
+    <!-- Blog Information -->
+
+    <div class="container mt-4">
+      <h2><%= blog.title %></h2>
+      <img src="<%= blog.coverImageUrl %>" alt="cover-image" width="500" />
+      <p><%= blog.body %></p>
+    </div>
+
+    <!-- Writer Information -->
+
+    <div class="container mt-4 d-flex flex-column">
+      <div>
+        <h4>Writer Information</h4>
+      </div>
+      <div class="d-flex align-items-end writerInfo">
+        <img
+          src="<%= blog.createdBy.profileImageUrl %>"
+          alt="writerImage"
+          width="50"
+        />
+        <h5><%= blog.createdBy.fullName %></h5>
+      </div>
+    </div>
+
+    <!-- Comments Area -->
+
+    <!-- Add Comment Section -->
+    <% if (locals.user) { %>
+    <div class="container mt-3">
+      <h4>Comments Area (<%= comments.length %>)</h4>
+      <form action="/blog/comment/<%= blog._id %>" method="post">
+        <div class="mb-3 mt-4">
+          <label for="comment" class="form-label">Add Comment</label>
+          <input
+            type="text"
+            name="content"
+            class="form-control"
+            id="comment"
+            placeholder="Write Something...."
+          />
+          <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <% } %>
+
+    <!-- Show Comment Section -->
+
+    <div class="mt-4 mb-4 container">
+      <% comments.forEach(comment => { %>
+      <div class="d-flex flex-column">
+        <div class="d-flex align-items-end">
+          <img
+            src="<%= comment.createdBy.profileImageUrl %>"
+            alt="writerImage"
+            width="50"
+            style="border-radius: 50%;"
+          />
+          <h6 style="margin-left: 10px"><%= comment.createdBy.fullName %>:</h6>
+        </div>
+        <pre><%= comment.content %></pre>
+      </div>
+      <% }) %>
+    </div>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>

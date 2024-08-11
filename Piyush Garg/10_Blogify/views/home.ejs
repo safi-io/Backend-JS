@@ -3,8 +3,53 @@
   <head>
     <%- include('./partials/head') %>
     <title>Blogify</title>
+    <style>
+      .empty-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+      }
+      .card-img-top {
+        height: 200px; /* Adjust height as needed */
+        object-fit: cover; /* Ensures the image covers the area without stretching */
+      }
+      .card {
+        width: 100%;
+      }
+    </style>
   </head>
   <body>
-    <%- include("./partials/nav") %> <%- include('./partials/script') %>
+    <%- include("./partials/nav") %> 
+    <% if (locals.blogs.length > 0) { %>
+    <div class="container mt-4">
+      <div class="row">
+        <% blogs.forEach(blog => { %>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card">
+            <img
+              src="<%= blog.coverImageUrl %>"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= blog.title %></h5>
+              <a href="/blog/<%= blog._id %>" class="btn btn-primary"
+                >Read Blog</a
+              >
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <% } else { %>
+      <div class="empty-container">
+
+        <h1>No blogs added yet</h1>
+      </div>
+
+    <% } %> <%- include('./partials/script') %>
   </body>
 </html>

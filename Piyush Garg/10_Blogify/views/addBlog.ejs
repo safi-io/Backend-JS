@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Blogify- Add Blog</title>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+
+    <!-- FORM FOR ADDING BLOG -->
+
+    <div class="container mt-3">
+      <form method="post" action="/blog" enctype="multipart/form-data">
+        <!-- Cover Image -->
+        <div class="mb-3">
+          <label for="coverImage" class="form-label">Cover Image</label>
+          <input
+            type="file"
+            class="form-control"
+            id="coverImage"
+            name="coverImage"
+          />
+        </div>
+
+        <!-- Blog Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            placeholder="Write Blog-Title Here"
+          />
+        </div>
+
+        <!-- Blog Body -->
+        <div class="mb-3">
+          <label for="body" class="form-label">Body Content</label>
+          <textarea
+            class="form-control"
+            placeholder="Write Blog-Content Here"
+            id="body"
+            name="body"
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mb-3">
+          <button class="btn btn-primary">ADD BLOG</button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>
