@@ -7,4 +7,3 @@ Request Type is GET at 8/1/2024, 9:09:59 PM to /safikhan?age=18&city=Faisalabad
 Request Type is GET at 8/1/2024, 9:10:11 PM to /safikhan?age=18&city=Faisalabad
 Request Type is GET at 8/1/2024, 9:10:48 PM to /
 Request Type is GET at 8/1/2024, 9:10:56 PM to /?name=Safi
-Request Type is GET at 8/1/2024, 9:10:59 PM to /?name=Emaan
