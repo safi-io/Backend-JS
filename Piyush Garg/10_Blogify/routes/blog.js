@@ -58,4 +58,40 @@ router.post("/comment/:slug", async (req, res) => {
   res.redirect(`/blog/${req.params.slug}`);
 });
 
+// To Delete a blog
+
+router.post("/delete/:slug", async (req, res) => {
+  const providedBlogID = req.params.slug;
+  const data = await blog.findOne({ _id: providedBlogID });
+  if (req.user._id.toString() === data.createdBy._id.toString()) {
+    await blog.deleteOne({ _id: providedBlogID });
+  }
+  return res.redirect("/");
+});
+
+// To Edit a blog - Phase 1
+
+router.get("/edit/:slug", async (req, res) => {
+  const providedBlogID = req.params.slug;
+  // const data = await blog.findOne({ _id: providedBlogID });
+  // if (req.user._id.toString() === data.createdBy._id.toString()) {
+  // await blog.deleteOne({ _id: providedBlogID });
+  // }
+  res.render("editBlog", { mainID: providedBlogID, user: req.user });
+});
+
+// To edit a blog - Phase 2
+
+router.post("/edit/:slug", async (req, res) => {
+  const providedBlogID = req.params.slug;
+  const { title, body } = req.body;
+  const data = await blog.findOne({ _id: providedBlogID });
+
+  if (req.user._id.toString() === data.createdBy._id.toString()) {
+    await blog.findByIdAndUpdate(providedBlogID, { title, body });
+  }
+
+  return res.redirect(`/blog/${req.params.slug}`);
+});
+
 module.exports = router;

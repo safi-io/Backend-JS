@@ -5,10 +5,7 @@
     <title>Blogify- Read Blogs</title>
   </head>
   <body>
-    <%- include("./partials/nav") %>
-    
-    
-    <% if (!locals.user) { %>
+    <%- include("./partials/nav") %> <% if (!locals.user) { %>
     <div class="alert alert-info" role="alert">
       You must sign-in to add comments on blogs.
     </div>
@@ -23,6 +20,9 @@
     </div>
 
     <!-- Writer Information -->
+    <div class="container">
+      <hr />
+    </div>
 
     <div class="container mt-4 d-flex flex-column">
       <div>
@@ -38,7 +38,28 @@
       </div>
     </div>
 
+    <!-- Edit and Delete-->
+    <% if (locals.user) { %>
+    <div class="container d-flex align-items-start mt-4">
+      <% if (user._id.toString() === blog.createdBy._id.toString()) { %>
+
+      <form action="/blog/edit/<%= blog._id %>" method="get" class="me-3">
+        <button type="submit" class="btn btn-info">EDIT</button>
+      </form>
+
+      <form action="/blog/delete/<%= blog._id %>" method="post">
+        <button type="submit" class="btn btn-danger">DELETE</button>
+      </form>
+
+      <% } %>
+    </div>
+    <% } %>
+
     <!-- Comments Area -->
+
+    <div class="container">
+      <hr />
+    </div>
 
     <!-- Add Comment Section -->
     <% if (locals.user) { %>
@@ -61,7 +82,7 @@
 
     <% } %>
 
-    <!-- Show Comment Section -->
+    <!--Show Comment Section -->
 
     <div class="mt-4 mb-4 container">
       <% comments.forEach(comment => { %>
@@ -71,7 +92,7 @@
             src="<%= comment.createdBy.profileImageUrl %>"
             alt="writerImage"
             width="50"
-            style="border-radius: 50%;"
+            style="border-radius: 50%"
           />
           <h6 style="margin-left: 10px"><%= comment.createdBy.fullName %>:</h6>
         </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Blogify- Edit Blog</title>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+
+    <!-- FORM FOR Editing BLOG -->
+
+    <div class="container mt-3">
+      <form
+        method="post"
+        action="/blog/edit/<%= mainID %>"
+      >
+        <!-- Blog Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            placeholder="Edit Blog-Title Here"
+          />
+        </div>
+
+        <!-- Blog Body -->
+        <div class="mb-3">
+          <label for="body" class="form-label">Body Content</label>
+          <textarea
+            class="form-control"
+            placeholder="Edit Blog-Content Here"
+            id="body"
+            name="body"
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mb-3">
+          <button class="btn btn-primary">EDIT BLOG</button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('./partials/script') %>
+  </body>
+</html>
